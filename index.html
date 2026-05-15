@@ -1,0 +1,1272 @@
+<!doctype html>
+<html lang="tr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Makeup by Iremi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f6f4f0;
+      --bg-dark: #111111;
+      --ink: #0b0b0b;
+      --gold: #c9a97a;
+      --muted: #8a8a8a;
+      --font-serif: "Playfair Display", serif;
+      --font-sans: "Jost", sans-serif;
+      --card-bg: #f9f9f9;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      scroll-behavior: smooth;
+    }
+
+    /* ---------- HEADER ---------- */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 44px 0;
+      pointer-events: none;
+      transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .site-header.scrolled {
+      background-color: var(--bg);
+      padding-bottom: 24px;
+      padding-top: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .site-header.scrolled.dark-mode {
+      background-color: var(--bg-dark);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .site-header>* {
+      pointer-events: auto;
+    }
+
+    .logo {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: 26px;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      line-height: 1;
+      position: relative;
+      z-index: 60;
+    }
+
+    .logo em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .site-header.dark-mode .logo {
+      color: #fff;
+    }
+
+    .nav {
+      display: flex;
+      gap: 38px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav a {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color .25s ease;
+    }
+
+    .site-header.dark-mode .nav a {
+      color: #fff;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: 0;
+      height: 1px;
+      background: var(--ink);
+      transition: right .35s ease;
+    }
+
+    .site-header.dark-mode .nav a::after {
+      background: #fff;
+    }
+
+    .nav a:hover::after {
+      right: 0;
+    }
+
+    .nav a.is-active::after {
+      right: 0;
+      background: var(--gold);
+    }
+
+    /* ---------- HAMBURGER ---------- */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 60;
+      position: relative;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      margin: 5px 0;
+      background-color: var(--ink);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .site-header.dark-mode .hamburger span {
+      background-color: #fff;
+    }
+
+    .hamburger.is-active span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+
+    .hamburger.is-active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.is-active span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      z-index: 1;
+    }
+
+    .stage {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .frame {
+      position: relative;
+      overflow: hidden;
+      background: #1a1a1a;
+      transition: width 1.1s cubic-bezier(.6, .05, .2, 1), height 1.1s cubic-bezier(.6, .05, .2, 1);
+      z-index: 2;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    }
+
+    .frame .wordmark.over {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      right: auto;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.4s ease, transform 8s ease-out;
+      transform: scale(1.04);
+    }
+
+    .slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .wordmark {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      pointer-events: none;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: clamp(60px, 10.5vw, 180px);
+      line-height: 0.86;
+      letter-spacing: -0.015em;
+      white-space: nowrap;
+      user-select: none;
+      margin: 0;
+    }
+
+    .wordmark.base {
+      color: var(--ink);
+      z-index: 1;
+    }
+
+    .wordmark.over {
+      color: #ffffff;
+      z-index: 6;
+    }
+
+    .wordmark .by {
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0.005em;
+    }
+
+    /* ARROWS */
+    .arrow {
+      z-index: 8;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+      color: #fff;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: all .25s ease;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .arrow:hover {
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .arrow svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* BOTTOM ROW */
+    .hero-foot {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0 44px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      z-index: 9;
+    }
+
+    .subtitle-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      justify-self: center;
+    }
+
+    .foot-meta {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .foot-meta .dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      vertical-align: middle;
+      margin: -2px 10px 0 0;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(15px, 1.15vw, 19px);
+      color: var(--ink);
+      line-height: 1.4;
+      max-width: 520px;
+      margin: 0;
+    }
+
+    .subtitle em {
+      font-style: italic;
+    }
+
+    .counter {
+      justify-self: end;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .counter .num {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .counter .sep {
+      width: 28px;
+      height: 1px;
+      background: var(--ink);
+      display: inline-block;
+      transform: translateY(-4px);
+      opacity: 0.4;
+    }
+
+    /* ---------- ABOUT (CURTAIN) ---------- */
+    .curtain-wrap {
+      position: relative;
+      z-index: 30;
+      margin-top: -100vh;
+      height: 220vh;
+      pointer-events: none;
+    }
+
+    .curtain-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .curtain {
+      position: absolute;
+      inset: 0;
+      background: #000000;
+      color: #f3efe7;
+      overflow: hidden;
+      transform: translateY(100%);
+      will-change: transform;
+      pointer-events: auto;
+    }
+
+    .curtain-inner {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      align-items: center;
+      gap: 6vw;
+      padding: 0 8vw;
+      z-index: 2;
+    }
+
+    .curtain-portrait {
+      justify-self: end;
+      width: 32vw;
+      max-width: 460px;
+      aspect-ratio: 3 / 4;
+      background-color: var(--muted);
+      /* Placeholder color */
+      position: relative;
+    }
+
+    .curtain-portrait::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(201, 169, 122, 0.18);
+      pointer-events: none;
+    }
+
+    .curtain-text {
+      max-width: 520px;
+      text-align: left;
+    }
+
+
+
+    .eyebrow {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+
+    .editorial {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(26px, 2.6vw, 44px);
+      line-height: 1.22;
+      letter-spacing: -0.01em;
+      max-width: 22ch;
+      text-wrap: balance;
+      margin: 0;
+    }
+
+    .editorial em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .signature {
+      margin-top: 44px;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 22px;
+      color: #f3efe7;
+      opacity: 0.85;
+    }
+
+    .curtain-foot {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 36px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 44px;
+      font-family: var(--font-sans);
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(243, 239, 231, 0.5);
+    }
+
+    .curtain-foot span:first-child {
+      text-align: left;
+    }
+
+    .curtain-foot span:last-child {
+      text-align: right;
+    }
+
+    /* ---------- SERVICES ---------- */
+    .services {
+      position: relative;
+      z-index: 30;
+      background: var(--bg);
+      padding: 10vh 10vw;
+      border-bottom: 1px solid rgba(11, 11, 11, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      /* Set an explicit height so cells are equal height. 
+       Or use aspect-ratio. Let's use viewport height proportion. */
+      height: 50vh;
+      min-height: 400px;
+    }
+
+    .service-cell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      background-color: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .service-cell.photo {
+      background-color: var(--muted);
+      /* Placeholder color */
+      padding: 0;
+      /* Photos fill completely */
+    }
+
+    .service-cell.photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 1;
+    }
+
+    .service-title {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 500;
+      margin: 0 0 16px 0;
+    }
+
+    .service-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink);
+      max-width: 320px;
+      margin: 0;
+    }
+
+    /* ---------- REFERENCES ---------- */
+    .references {
+      position: relative;
+      z-index: 30;
+      background: var(--bg);
+      padding: 100px 0;
+      overflow: hidden;
+    }
+
+    .ref-title {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: 36px;
+      font-weight: 400;
+      margin: 0 0 60px 0;
+      color: var(--ink);
+    }
+
+    .marquee-container {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+
+    .marquee-container:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+
+      /* Translate by half because we duplicate the content */
+    }
+
+    .ref-strip {
+      display: flex;
+      gap: 24px;
+      padding: 0 12px;
+    }
+
+    .review-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      width: 360px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex-shrink: 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .stars {
+      color: var(--gold);
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .review-name {
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .review-text {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ---------- CONTACT ---------- */
+    .contact {
+      position: relative;
+      z-index: 30;
+      background: var(--bg-dark);
+      color: #fff;
+      padding: 120px 10vw 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      width: 100%;
+      max-width: 1200px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .contact-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .contact-right {
+      width: 100%;
+      height: 450px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .contact-right iframe {
+      filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%) grayscale(15%);
+    }
+
+    .contact-title {
+      font-family: var(--font-serif);
+      font-size: 48px;
+      font-weight: 400;
+      margin: 0 0 40px 0;
+      color: #fff;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 60px;
+    }
+
+    .contact-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .contact-links a:hover {
+      color: var(--gold);
+    }
+
+    .contact-form {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 12px 0;
+      transition: border-color 0.3s;
+      border-radius: 0;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-bottom-color: var(--gold);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .submit-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 18px 32px;
+      cursor: pointer;
+      transition: all 0.3s;
+      align-self: flex-start;
+    }
+
+    .submit-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .contact-footer {
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* RESPONSIVENESS */
+    @media (max-width: 900px) {
+      .frame {
+        width: 80vw;
+        height: 70vh;
+      }
+
+      .wordmark {
+        font-size: clamp(28px, 8.5vw, 60px);
+      }
+
+      .site-header {
+        padding: 16px 20px 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .site-header.scrolled {
+        padding-top: 16px;
+        padding-bottom: 16px;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .nav-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 40;
+      }
+
+      .site-header.dark-mode .nav-wrap {
+        background: var(--bg-dark);
+      }
+
+      .nav-wrap.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .nav {
+        flex-direction: column;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .nav a {
+        font-size: 16px;
+      }
+
+      .hero-foot {
+        padding: 0 16px 20px;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .subtitle-row {
+        gap: 12px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+      }
+
+      .counter,
+      .foot-meta {
+        justify-self: center;
+      }
+
+      .curtain-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 0 24px;
+        gap: 40px;
+        justify-content: center;
+        align-content: center;
+      }
+
+      .curtain-portrait {
+        justify-self: center;
+        width: 60vw;
+      }
+
+      .curtain-text {
+        text-align: center;
+      }
+
+      .curtain-foot {
+        padding: 0 24px;
+      }
+
+      .service-row {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+
+      .service-cell {
+        height: 400px;
+      }
+
+      /* Reorder for mobile so text always comes first: Yazı, Resim, Resim */
+      .service-cell:not(.photo) {
+        order: -1;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+        margin-bottom: 60px;
+      }
+
+      .contact-right {
+        height: 50vh;
+      }
+
+      .contact-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header" id="siteHeader">
+    <button class="hamburger" id="hamburger" aria-label="Menü">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="logo">Makeup <em>by</em> Iremi</div>
+    <nav class="nav-wrap" id="navWrap">
+      <ul class="nav">
+        <li><a href="#hero" class="is-active">Ana Sayfa</a></li>
+        <li><a href="#curtain">Hakkımızda</a></li>
+        <li><a href="portfolio.html">Portfolyo</a></li>
+        <li><a href="#contact">İletişim</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="stage">
+      <div class="frame" id="frame">
+        <!-- slides injected by JS -->
+        <h1 class="wordmark over" aria-hidden="true">MAKEUP <span class="by">by</span> IREMI</h1>
+      </div>
+    </div>
+
+    <h1 class="wordmark base">MAKEUP <span class="by">by</span> IREMI</h1>
+
+    <div class="hero-foot">
+      <div class="foot-meta"><span class="dot"></span>Stüdyo · Serik · Antalya</div>
+      <div class="subtitle-row">
+        <button class="arrow prev" id="prev" aria-label="Önceki">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square">
+            <path d="M14 6 L8 12 L14 18" />
+          </svg>
+        </button>
+        <p class="subtitle">Her yüz bir hikaye anlatır. <em>Gelin sizinkini yazalım.</em></p>
+        <button class="arrow next" id="next" aria-label="Sonraki">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square">
+            <path d="M10 6 L16 12 L10 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="counter">
+        <span class="num" id="cur">01</span>
+        <span class="sep"></span>
+        <span class="num" id="tot">04</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curtain Section -->
+  <div class="curtain-wrap" id="curtainWrap">
+    <div class="curtain-sticky">
+      <section class="curtain" id="curtain">
+        <div class="curtain-inner">
+          <!-- PHOTO: iremi-portrait.webp (900x1200) -->
+          <div class="curtain-portrait" aria-label="İremi'nin Portresi"
+            style="background-image: url('img/iremi-portrait.webp'); background-size: cover; background-position: center;">
+          </div>
+          <div class="curtain-text">
+            <div class="eyebrow">Sanatçıdan Bir Not</div>
+            <p class="editorial">
+              En özel günlerde insan güzel görünmekten çok, kendini iyi hissetmek istiyor. Burada yaptığım şey tam
+              olarak <em>bu hissi tamamlamak.</em>
+            </p>
+            <div class="signature">— İremnur Çoşkun</div>
+          </div>
+        </div>
+        <div class="curtain-foot">
+          <span>Kuruluş 2022</span>
+          <span>Devam etmek için kaydırın</span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <!-- Row 1 -->
+    <div class="service-row">
+      <!-- PHOTO: bridal-1.webp (800x800) -->
+      <div class="service-cell photo"><img src="img/bridal-1.webp" alt="Bridal Makeup"></div>
+      <!-- PHOTO: bridal-2.webp (800x800) -->
+      <div class="service-cell photo"><img src="img/bridal-2.webp" alt="Bridal Makeup"></div>
+      <div class="service-cell">
+        <h3 class="service-title">Bridal Pro</h3>
+        <p class="service-desc">Hayatınızın en özel gününde ışığınızı en güzel şekilde taşıyın. Gelin makyajı cildinize,
+          tarzınıza ve o güne özel tasarlanır — sabahtan geceye kadar kalıcı, kusursuz.</p>
+      </div>
+    </div>
+    <!-- Row 2 -->
+    <div class="service-row">
+      <div class="service-cell">
+        <h3 class="service-title">Hair & Türban Tasarımı</h3>
+        <p class="service-desc">Saç ve türban tasarımı makyajla birlikte düşünülmeli. İremi her ikisini birlikte ele
+          alarak bütünlüklü ve uyumlu bir görünüm yaratıyor.</p>
+      </div>
+      <!-- PHOTO: hair-1.webp (800x800) -->
+      <div class="service-cell photo"><img src="img/hair-1.webp" alt="Hair Design"></div>
+      <!-- PHOTO: hair-2.webp (800x800) -->
+      <div class="service-cell photo"><img src="img/hair-2.webp" alt="Turban Design"></div>
+    </div>
+    <!-- Row 3 -->
+    <div class="service-row">
+      <!-- PHOTO: set-1.webp (800x800) -->
+      <div class="service-cell photo"><img src="img/set-1.webp" alt="Set Makeup"></div>
+      <!-- PHOTO: set-2.webp (800x800) -->
+      <div class="service-cell photo"><img src="img/set-2.webp" alt="Freelance Makeup"></div>
+      <div class="service-cell">
+        <h3 class="service-title">Freelance & Set Makyajı</h3>
+        <p class="service-desc">Nişan, kına, mezuniyet, marka çekimi — studio dışında her ortamda yanınızda.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- References Section -->
+  <section class="references" id="references">
+    <h2 class="ref-title">Müşteri Yorumları</h2>
+
+    <div class="marquee-container">
+      <!-- We duplicate the strip so it loops seamlessly -->
+      <div class="ref-strip">
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Ayşe Yılmaz</div>
+          <p class="review-text">Düğün günümde harikalar yarattı. Makyajım gece sonuna kadar ilk yapıldığı gibi
+            duruyordu. Çok teşekkür ederim!</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Zeynep Kaya</div>
+          <p class="review-text">Kına gecem için türban tasarımı ve makyaj yaptırdım. İremi Hanım'ın enerjisi ve
+            profesyonelliği muazzam.</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Elif Demir</div>
+          <p class="review-text">Çekim makyajı için anlaştık, ışık altındaki duruşu inanılmazdı. Kesinlikle tavsiye
+            ediyorum.</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Merve Çelik</div>
+          <p class="review-text">Nişanım için tercih ettim. Sade ama çok şık bir makyaj yaptı. Herkes bayıldı!</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Selin Şahin</div>
+          <p class="review-text">Güler yüzü ve samimiyeti sayesinde o stresli günde çok rahatladım. Harika bir iş
+            çıkardı.</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Burcu Özden</div>
+          <p class="review-text">Hem saç tasarımı hem makyaj tek kelimeyle kusursuzdu. İyi ki sizi seçmişim.</p>
+        </div>
+      </div>
+      <!-- Duplicated strip for seamless loop -->
+      <div class="ref-strip">
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Ayşe Yılmaz</div>
+          <p class="review-text">Düğün günümde harikalar yarattı. Makyajım gece sonuna kadar ilk yapıldığı gibi
+            duruyordu. Çok teşekkür ederim!</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Zeynep Kaya</div>
+          <p class="review-text">Kına gecem için türban tasarımı ve makyaj yaptırdım. İremi Hanım'ın enerjisi ve
+            profesyonelliği muazzam.</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Elif Demir</div>
+          <p class="review-text">Çekim makyajı için anlaştık, ışık altındaki duruşu inanılmazdı. Kesinlikle tavsiye
+            ediyorum.</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Merve Çelik</div>
+          <p class="review-text">Nişanım için tercih ettim. Sade ama çok şık bir makyaj yaptı. Herkes bayıldı!</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Selin Şahin</div>
+          <p class="review-text">Güler yüzü ve samimiyeti sayesinde o stresli günde çok rahatladım. Harika bir iş
+            çıkardı.</p>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="review-name">Burcu Özden</div>
+          <p class="review-text">Hem saç tasarımı hem makyaj tek kelimeyle kusursuzdu. İyi ki sizi seçmişim.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="contact-grid">
+      <div class="contact-left">
+        <h2 class="contact-title">iletişim</h2>
+
+        <div class="contact-links">
+          <a href="tel:+905541436500">0554 143 65 00</a>
+          <a href="https://instagram.com/makeupbyiremi" target="_blank">@makeupbyiremi</a>
+        </div>
+
+        <form class="contact-form">
+          <div class="form-group">
+            <input type="text" placeholder="Adınız Soyadınız" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" placeholder="Telefon Numaranız" required>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Mesajınız" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Gönder</button>
+        </form>
+      </div>
+      <div class="contact-right">
+        <iframe
+          src="https://maps.google.com/maps?q=Orta,+1006.+Sk.+No:14/7,+07500+Serik/Antalya&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="contact-footer">
+      Serik · Antalya
+    </div>
+  </section>
+
+  <script>
+    const header = document.getElementById('siteHeader');
+    // ---- Slides (placeholder editorial imagery via Unsplash) ----
+    // These are temporary placeholder images for the hero section as requested
+    const SLIDES = [
+      { src: "img/hero-1.webp", ratio: 1.4905 },
+      { src: "img/hero-2.webp", ratio: 1.7916 },
+      { src: "img/hero-3.webp", ratio: 0.8055 },
+      { src: "img/hero-4.webp", ratio: 1.4905 },
+      { src: "img/hero-5.webp", ratio: 0.7466 }
+    ];
+
+    const frame = document.getElementById('frame');
+    const cur = document.getElementById('cur');
+    const tot = document.getElementById('tot');
+
+    SLIDES.forEach((s, i) => {
+      const d = document.createElement('div');
+      d.className = 'slide' + (i === 0 ? ' is-active' : '');
+      d.style.backgroundImage = `url(${s.src})`;
+      frame.appendChild(d);
+    });
+    tot.textContent = String(SLIDES.length).padStart(2, '0');
+
+    function applyFrameSize(i) {
+      const s = SLIDES[i];
+      const rBox = window.innerWidth / window.innerHeight;
+      if (s.ratio > rBox) {
+        frame.style.width = '80vw';
+        frame.style.height = `calc(80vw / ${s.ratio})`;
+      } else {
+        frame.style.height = '80vh';
+        frame.style.width = `calc(80vh * ${s.ratio})`;
+      }
+    }
+    applyFrameSize(0);
+
+    let idx = 0;
+    window.addEventListener('resize', () => applyFrameSize(idx));
+    let timer;
+    function go(n) {
+      const slides = frame.querySelectorAll('.slide');
+      slides[idx].classList.remove('is-active');
+      idx = (n + SLIDES.length) % SLIDES.length;
+      slides[idx].classList.add('is-active');
+      applyFrameSize(idx);
+      cur.textContent = String(idx + 1).padStart(2, '0');
+    }
+    function next() { go(idx + 1); }
+    function prev() { go(idx - 1); }
+    function restart() {
+      clearInterval(timer);
+      timer = setInterval(next, 4000);
+    }
+    document.getElementById('next').addEventListener('click', () => { next(); restart(); });
+    document.getElementById('prev').addEventListener('click', () => { prev(); restart(); });
+    restart();
+
+    // ---- Curtain rise on scroll & Header Colors ----
+    const curtain = document.getElementById('curtain');
+    const contact = document.getElementById('contact');
+    const services = document.getElementById('services');
+
+    function handleScroll() {
+      // 1. Update Curtain position
+      const vh = window.innerHeight;
+      const start = vh * 0.2;
+      const end = vh * 1.2;
+      const y = window.scrollY;
+      let p = (y - start) / (end - start);
+      p = Math.max(0, Math.min(1, p));
+      curtain.style.transform = `translateY(${(1 - p) * 100}%)`;
+
+      // 2. Update Header Colors (after transform is applied)
+      const curtainRect = curtain.getBoundingClientRect();
+      const contactRect = contact.getBoundingClientRect();
+      const servicesRect = services.getBoundingClientRect();
+
+      const overCurtain = curtainRect.top <= 50 && servicesRect.top > 50;
+      const overContact = contactRect.top <= 50;
+
+      if (overCurtain || overContact) {
+        header.classList.add('dark-mode');
+      } else {
+        header.classList.remove('dark-mode');
+      }
+
+      if (y > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+
+
+    // ---- Hamburger Menu & Smooth Scroll ----
+    const hamburgerBtn = document.getElementById('hamburger');
+    const navWrapEl = document.getElementById('navWrap');
+    hamburgerBtn.addEventListener('click', () => {
+      hamburgerBtn.classList.toggle('is-active');
+      navWrapEl.classList.toggle('is-open');
+    });
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        hamburgerBtn.classList.remove('is-active');
+        navWrapEl.classList.remove('is-open');
+
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          if (href === '#curtain') {
+            // Scroll to the exact point where curtain animation finishes
+            window.scrollTo({ top: window.innerHeight * 1.2, behavior: 'smooth' });
+          } else {
+            const target = document.querySelector(href);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        }
+      });
+    });
+
+  </script>
+</body>
+
+</html>
